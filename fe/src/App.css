@@ -105,3 +105,20 @@
     text-align: center;
   }
 }
+
+.header-title-link {
+  text-decoration: none;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.user-name {
+  color: #b0b5ba;
+  font-size: 14px;
+  white-space: nowrap;
+}

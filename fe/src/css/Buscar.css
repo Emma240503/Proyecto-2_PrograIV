@@ -1,0 +1,46 @@
+.buscar-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.buscar-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.buscar-sidebar h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a232f;
+  margin: 0 0 14px 0;
+}
+
+.buscar-btn {
+  margin-top: 16px;
+}
+
+.buscar-resultados {
+  flex: 1;
+  min-width: 0;
+}
+
+.buscar-resultados h2 {
+  font-size: 20px;
+  color: #1a232f;
+  margin: 0 0 20px 0;
+}
+
+@media (max-width: 768px) {
+  .buscar-layout {
+    flex-direction: column;
+  }
+  .buscar-sidebar {
+    width: 100%;
+  }
+}
