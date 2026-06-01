@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @RestController
@@ -78,7 +79,7 @@ public class OferenteController {
         Files.createDirectories(dir);
         String filename = auth.getName() + "_" + UUID.randomUUID() + ".pdf";
         Path dest = dir.resolve(filename);
-        file.transferTo(dest.toFile());
+        Files.copy(file.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING);
         service.actualizarCurriculumOferente(auth.getName(), filename);
     }
 
