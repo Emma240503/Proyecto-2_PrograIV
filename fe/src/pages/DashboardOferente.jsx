@@ -45,7 +45,7 @@ function DashboardOferente() {
       const res = await fetch('/api/oferente/habilidades', {
         method: 'POST',
         headers: ah(),
-        body: JSON.stringify({ caracteristicaId: parseInt(caracteristicaId), nivel: val.nivel || 1 }),
+        body: JSON.stringify({ caracteristicaId: caracteristicaId, nivel: val.nivel || 1 }),
       });
       if (!res.ok) { setError('Error al agregar habilidad.'); return; }
     }
