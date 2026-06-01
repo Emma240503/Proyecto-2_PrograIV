@@ -174,7 +174,9 @@ public class Service {
                     }
                 }
             }
-            if (requisitos.size() > 0) {
+            if (requisitos.isEmpty()) {
+                resultado.add(new CandidatoDTO(o, 0, 0, 100.0));
+            } else {
                 double porcentaje = (cumplidos * 100.0) / requisitos.size();
                 resultado.add(new CandidatoDTO(o, cumplidos, requisitos.size(), porcentaje));
             }

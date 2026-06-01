@@ -100,14 +100,14 @@ function DashboardAdmin() {
   }
 
   function renderNode(node) {
-    const isExpanded = !!expanded[node.id];
-    const children = hijos[node.id] || [];
-    const isAdding = addingUnder === node.id;
+    const isExpanded = !!expanded[node.caracteristicaId];
+    const children = hijos[node.caracteristicaId] || [];
+    const isAdding = addingUnder === node.caracteristicaId;
 
     return (
-      <div key={node.id} className="admin-tree-node">
+      <div key={node.caracteristicaId} className="admin-tree-node">
         <div className="admin-tree-row">
-          <button type="button" className="admin-tree-toggle" onClick={() => toggleExpand(node.id)}>
+          <button type="button" className="admin-tree-toggle" onClick={() => toggleExpand(node.caracteristicaId)}>
             {isExpanded ? '▾' : '▸'}
           </button>
           <span className="admin-tree-label">{node.nombre}</span>
@@ -115,7 +115,7 @@ function DashboardAdmin() {
             type="button"
             className="admin-tree-add"
             title="Agregar característica hija"
-            onClick={() => { setAddingUnder(node.id); setAddingRoot(false); setNewNombre(''); }}
+            onClick={() => { setAddingUnder(node.caracteristicaId); setAddingRoot(false); setNewNombre(''); }}
           >
             +
           </button>
@@ -127,9 +127,9 @@ function DashboardAdmin() {
               onChange={e => setNewNombre(e.target.value)}
               placeholder={`Sub-característica de "${node.nombre}"`}
               autoFocus
-              onKeyDown={e => e.key === 'Enter' && agregarCaracteristica(node.id)}
+              onKeyDown={e => e.key === 'Enter' && agregarCaracteristica(node.caracteristicaId)}
             />
-            <button className="confirm" onClick={() => agregarCaracteristica(node.id)}>✓</button>
+            <button className="confirm" onClick={() => agregarCaracteristica(node.caracteristicaId)}>✓</button>
             <button className="cancel" onClick={cancelAdd}>✕</button>
           </div>
         )}

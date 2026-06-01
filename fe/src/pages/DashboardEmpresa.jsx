@@ -183,10 +183,10 @@ function DashboardEmpresa() {
             ? <p className="empty-state">No hay candidatos para este puesto.</p>
             : <div className="item-list">
                 {candidatos.map((c, i) => (
-                  <div className="candidato-item" key={c.id ?? i}>
-                    <span>{c.nombre} {c.primerApellido}</span>
+                  <div className="candidato-item" key={c.oferente?.id ?? i}>
+                    <span>{c.oferente.nombre} {c.oferente.primerApellido}</span>
                     <span className="candidato-match">
-                      {c.porcentajeCoincidencia ?? c.coincidencia ?? c.match ?? '—'}%
+                      {c.porcentaje.toFixed(1)}%
                     </span>
                   </div>
                 ))}
