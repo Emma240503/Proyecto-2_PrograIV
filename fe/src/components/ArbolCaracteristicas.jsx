@@ -77,6 +77,7 @@ function ArbolCaracteristicas({ baseUrl, onSelectionChange, mode = 'checkbox', h
               title="Nivel requerido (1-5)"
             />
           )}
+
         </div>
         {isExpanded && children.length > 0 && (
           <div className="tree-children">
