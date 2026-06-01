@@ -47,23 +47,23 @@ function ArbolCaracteristicas({ baseUrl, onSelectionChange, mode = 'checkbox', h
   }
 
   function renderNode(node) {
-    const children = hijos[node.id] || [];
-    const isExpanded = !!expanded[node.id];
-    const sel = selected[node.id];
+    const children = hijos[node.caracteristicaId] || [];
+    const isExpanded = !!expanded[node.caracteristicaId];
+    const sel = selected[node.caracteristicaId];
 
     return (
-      <div key={node.id} className="tree-node">
+      <div key={node.caracteristicaId} className="tree-node">
         <div className="tree-row">
-          <button type="button" className="tree-toggle" onClick={() => toggleExpand(node.id)}>
+          <button type="button" className="tree-toggle" onClick={() => toggleExpand(node.caracteristicaId)}>
             {isExpanded ? '▾' : '▸'}
           </button>
           <input
             type="checkbox"
-            id={`caract-${node.id}`}
+            id={`caract-${node.caracteristicaId}`}
             checked={!!sel?.checked}
-            onChange={e => handleCheck(node.id, e.target.checked)}
+            onChange={e => handleCheck(node.caracteristicaId, e.target.checked)}
           />
-          <label htmlFor={`caract-${node.id}`} className="tree-label">
+          <label htmlFor={`caract-${node.caracteristicaId}`} className="tree-label">
             {node.nombre}
           </label>
           {mode === 'level' && sel?.checked && (
@@ -72,7 +72,7 @@ function ArbolCaracteristicas({ baseUrl, onSelectionChange, mode = 'checkbox', h
               min="1"
               max="5"
               value={sel.nivel}
-              onChange={e => handleNivel(node.id, e.target.value)}
+              onChange={e => handleNivel(node.caracteristicaId, e.target.value)}
               className="nivel-input"
               title="Nivel requerido (1-5)"
             />
