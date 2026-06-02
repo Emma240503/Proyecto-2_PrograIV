@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping(value = {"/", "/{path:(?!api)[^\\.]*}", "/{path:(?!api)[^\\.]*}/**"})
+    @GetMapping(value = {"/", "/{path:(?!api|assets)[^\\.]*}", "/{path:(?!api|assets)[^\\.]*}/**"})
     public String spa() {
         return "forward:/index.html";
     }

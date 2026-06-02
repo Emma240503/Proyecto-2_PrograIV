@@ -16,6 +16,7 @@ function DashboardEmpresa() {
   const [treeKey, setTreeKey] = useState(0);
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
+  const [candidatoDetalle, setCandidatoDetalle] = useState(null);
 
   function ah() {
     return { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
@@ -44,6 +45,24 @@ function DashboardEmpresa() {
     if (res.ok) setCandidatos(await res.json());
   }
 
+  async function verCVOferente(oferenteId) {
+    const res = await fetch(`/api/oferente/curriculum/${oferenteId}`, { headers: ah() });
+    if (!res.ok) { alert('Este candidato no tiene CV registrado.'); return; }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  }
+
+  async function verInfoCandidato(oferente) {
+    const [perfilRes, habilRes] = await Promise.all([
+      fetch(`/api/oferente/perfil/${oferente.id}`, { headers: ah() }),
+      fetch(`/api/oferente/habilidades/${oferente.id}`, { headers: ah() }),
+    ]);
+    const perfil = perfilRes.ok ? await perfilRes.json() : oferente;
+    const habilidades = habilRes.ok ? await habilRes.json() : [];
+    setCandidatoDetalle({ ...perfil, habilidades });
+  }
+
   async function handleCrear(e) {
     e.preventDefault();
     setError(''); setMsg('');
@@ -51,7 +70,7 @@ function DashboardEmpresa() {
     const niveles = [];
     Object.entries(selCaract).forEach(([id, val]) => {
       if (val.checked) {
-        caracteristicaIds.push(parseInt(id));
+        caracteristicaIds.push(id);
         niveles.push(val.nivel || 1);
       }
     });
@@ -188,10 +207,42 @@ function DashboardEmpresa() {
                     <span className="candidato-match">
                       {c.porcentaje.toFixed(1)}%
                     </span>
+                    <button className="btn-secondary" onClick={() => verCVOferente(c.oferente.id)}>
+                      Ver CV
+                    </button>
+                    <button className="btn-secondary" onClick={() => verInfoCandidato(c.oferente)}>
+                      Ver perfil
+                    </button>
                   </div>
                 ))}
               </div>
           }
+          {candidatoDetalle && (
+            <div className="candidato-detalle-panel">
+              <div className="candidato-detalle-header">
+                <h4>{candidatoDetalle.nombre} {candidatoDetalle.primerApellido}</h4>
+                <button className="btn-secondary" onClick={() => setCandidatoDetalle(null)}>Cerrar</button>
+              </div>
+              <div className="candidato-detalle-info">
+                <p><strong>Correo:</strong> {candidatoDetalle.correo}</p>
+                <p><strong>Nacionalidad:</strong> {candidatoDetalle.nacionalidad}</p>
+                <p><strong>Ubicación:</strong> {candidatoDetalle.ubicacion}</p>
+                <p><strong>Teléfono:</strong> {candidatoDetalle.telefono}</p>
+              </div>
+              {candidatoDetalle.habilidades?.length > 0 && (
+                <div className="candidato-detalle-habilidades">
+                  <h5>Habilidades</h5>
+                  <ul>
+                    {candidatoDetalle.habilidades.map((h, i) => (
+                      <li key={i}>
+                        {h.caracteristicaCaracteristica?.nombre} — Nivel {h.nivel}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

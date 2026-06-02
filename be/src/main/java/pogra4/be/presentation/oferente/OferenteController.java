@@ -60,6 +60,18 @@ public class OferenteController {
         return service.habilidadesDeOferente(auth.getName());
     }
 
+    @GetMapping("/api/oferente/perfil/{oferenteId}")
+    public Oferente perfilById(@PathVariable String oferenteId) {
+        Oferente o = service.findOferenteById(oferenteId);
+        if (o == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return o;
+    }
+
+    @GetMapping("/api/oferente/habilidades/{oferenteId}")
+    public Iterable<OferenteHasCaracteristica> habilidadesById(@PathVariable String oferenteId) {
+        return service.habilidadesDeOferente(oferenteId);
+    }
+
     @PostMapping("/api/oferente/habilidades")
     @ResponseStatus(HttpStatus.CREATED)
     public void agregarHabilidad(@RequestBody HabilidadRequest req, Authentication auth) {

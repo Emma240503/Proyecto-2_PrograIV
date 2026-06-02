@@ -297,6 +297,63 @@
   font-size: 13px;
 }
 
+.candidato-detalle-panel {
+  margin-top: 20px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  padding: 18px 20px;
+}
+
+.candidato-detalle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.candidato-detalle-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a232f;
+}
+
+.candidato-detalle-info p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.candidato-detalle-habilidades {
+  margin-top: 14px;
+}
+
+.candidato-detalle-habilidades h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a232f;
+  margin: 0 0 8px 0;
+}
+
+.candidato-detalle-habilidades ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.candidato-detalle-habilidades li {
+  font-size: 14px;
+  color: #374151;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+
 @media (max-width: 768px) {
   .perfil-grid {
     grid-template-columns: 1fr;
