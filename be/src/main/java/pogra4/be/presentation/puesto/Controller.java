@@ -38,6 +38,11 @@ public class Controller {
         return service.getHijos(padreId);
     }
 
+    @GetMapping("/todos")
+    public List<Puesto> getTodos() {
+        return service.getPuestosActivosTodos();
+    }
+
     @GetMapping("/{id}")
     public Puesto getById(@PathVariable String id) {
         return service.findPuestoById(id);

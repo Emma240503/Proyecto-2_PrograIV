@@ -45,11 +45,12 @@ function List({ list }) {
     );
 }
 
-function Card({ puesto }) {
+export function Card({ puesto }) {
     return (
         <div className="card">
             <div className="card-header">
                 <h3 className="card-empresa">{puesto.empresa?.nombre}</h3>
+                {puesto.tipo === 'privado' && <span className="card-tipo-badge">Privado</span>}
             </div>
             <div className="card-body">
                 <p className="card-descripcion">{puesto.descripcion}</p>
@@ -58,15 +59,16 @@ function Card({ puesto }) {
                     <span className="value">₡{puesto.salario}</span>
                 </div>
             </div>
-            <div className="card-footer">
-                <div className="caracteristicas">
+            <div className="card-tooltip">
+                <p className="tooltip-title">Características requeridas</p>
+                <div className="tooltip-tags">
                     {puesto.caracteristicas?.length > 0
                         ? puesto.caracteristicas.map((c, i) => (
-                            <span key={i} className="tag">
-                                {c.caracteristicaCaracteristica?.nombre} (niv. {c.nivel})
+                            <span key={i} className="tooltip-tag">
+                                {c.caracteristicaCaracteristica?.nombre} · Niv. {c.nivel}
                             </span>
                         ))
-                        : <span className="sinCaract">Sin características</span>
+                        : <span className="tooltip-sin-caract">Sin características definidas</span>
                     }
                 </div>
             </div>

@@ -79,6 +79,14 @@ public class Service {
     public List<Puesto> getUltimosPuestosPublicos() {
         return puestos.findTop5ByTipoAndActivoOrderByFechaRegistroDesc("publico", (byte) 1);
     }
+
+    public List<Puesto> getPuestosActivosTodos() {
+        List<Puesto> resultado = new ArrayList<>();
+        for (Puesto p : puestos.findAll()) {
+            if (p.getActivo() == 1) resultado.add(p);
+        }
+        return resultado;
+    }
     //
 
     //

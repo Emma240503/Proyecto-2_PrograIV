@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import ArbolCaracteristicas from '../components/ArbolCaracteristicas.jsx';
 import { getToken, getId } from '../auth.js';
+import { Card } from '../Puestos.jsx';
 import '../css/Dashboard.css';
+import '../css/Puestos.css';
 
 function DashboardOferente() {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ function DashboardOferente() {
   const [tab, setTab] = useState('perfil');
   const [perfil, setPerfil] = useState(null);
   const [habilidades, setHabilidades] = useState([]);
+  const [puestos, setPuestos] = useState([]);
   const [selCaract, setSelCaract] = useState({});
   const [treeKey, setTreeKey] = useState(0);
   const [cvFile, setCvFile] = useState(null);
@@ -25,6 +28,7 @@ function DashboardOferente() {
     if (!token) { navigate('/'); return; }
     fetchPerfil();
     fetchHabilidades();
+    fetchPuestos();
   }, []);
 
   async function fetchPerfil() {
@@ -35,6 +39,11 @@ function DashboardOferente() {
   async function fetchHabilidades() {
     const res = await fetch('/api/oferente/habilidades', { headers: ah() });
     if (res.ok) setHabilidades(await res.json());
+  }
+
+  async function fetchPuestos() {
+    const res = await fetch('/api/puestos/todos', { headers: ah() });
+    if (res.ok) setPuestos(await res.json());
   }
 
   async function agregarHabilidad() {
@@ -96,6 +105,7 @@ function DashboardOferente() {
     { key: 'perfil',      label: 'Mi Perfil' },
     { key: 'habilidades', label: 'Habilidades' },
     { key: 'curriculum',  label: 'Currículum' },
+    { key: 'puestos',     label: 'Puestos disponibles' },
   ];
 
   return (
@@ -205,6 +215,19 @@ function DashboardOferente() {
               Ver / Descargar CV actual
             </button>
           </div>
+        </div>
+      )}
+
+      {tab === 'puestos' && (
+        <div className="dashboard-section">
+          <h3>Puestos disponibles</h3>
+          <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '16px', marginTop: 0 }}>
+            Pasa el cursor sobre una card para ver las características requeridas.
+          </p>
+          {puestos.length === 0
+            ? <p className="empty-state">No hay puestos disponibles.</p>
+            : <div className="cards-grid">{puestos.map(p => <Card puesto={p} key={p.id} />)}</div>
+          }
         </div>
       )}
     </div>
