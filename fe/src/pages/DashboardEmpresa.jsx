@@ -51,7 +51,7 @@ function DashboardEmpresa() {
     const niveles = [];
     Object.entries(selCaract).forEach(([id, val]) => {
       if (val.checked) {
-        caracteristicaIds.push(parseInt(id));
+        caracteristicaIds.push(id);
         niveles.push(val.nivel || 1);
       }
     });
