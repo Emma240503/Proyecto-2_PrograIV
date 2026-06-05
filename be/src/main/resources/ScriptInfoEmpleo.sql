@@ -162,6 +162,14 @@ CREATE TABLE IF NOT EXISTS `infoempleo`.`Puesto_has_Caracteristica` (
 ENGINE = InnoDB;
 
 
+
+-- Admin por defecto
+INSERT INTO `infoempleo`.`Admin`
+(`id`, `correo`, `nombre`, `descripcion`, `telefono`, `contrasenna`)
+VALUES
+    ('admin1', 'admin@bolsaempleo.local', 'Administrador', 'Admin del sistema', 0, '1');
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
