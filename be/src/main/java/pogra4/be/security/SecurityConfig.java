@@ -14,7 +14,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Collections;
 
 @Configuration
@@ -42,21 +41,60 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html", "/assets/**", "/*.js", "/*.css", "/*.svg", "/*.png", "/*.ico").permitAll()
+
+                        // ── Recursos estáticos y públicos ──────────────────────────────
+                        .requestMatchers(
+                                "/", "/index.html", "/assets/**",
+                                "/*.js", "/*.css", "/*.svg", "/*.png", "/*.ico"
+                        ).permitAll()
+
+                        // ── Auth ───────────────────────────────────────────────────────
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+
+                        // ── Registro público ───────────────────────────────────────────
                         .requestMatchers(HttpMethod.POST, "/api/empresas/registro").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/oferentes/registro").permitAll()
+
+                        // ── Puestos públicos ───────────────────────────────────────────
                         .requestMatchers(HttpMethod.GET, "/api/puestos/ultimos").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/puestos/buscar").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/puestos/todos").hasRole("OFERENTE")
+                        .requestMatchers(HttpMethod.GET, "/api/puestos/caracteristicas").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/puestos/caracteristicas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/puestos/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/caracteristicas/**").permitAll()
-                        .requestMatchers("/api/empresa/**").hasRole("EMPRESA")
-                        .requestMatchers(HttpMethod.GET, "/api/oferente/curriculum/**").hasAnyRole("EMPRESA", "OFERENTE", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/oferente/perfil/**").hasAnyRole("EMPRESA", "OFERENTE", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/oferente/habilidades/**").hasAnyRole("EMPRESA", "ADMIN")
+
+                        // ── Puestos privados (solo OFERENTE ve todos) ──────────────────
+                        .requestMatchers(HttpMethod.GET, "/api/puestos/todos").hasRole("OFERENTE")
+
+                        // ── Oferente: rutas compartidas con otros roles (más específicas primero) ──
+                        .requestMatchers(HttpMethod.GET,  "/api/oferente/curriculum/**")
+                        .hasAnyRole("EMPRESA", "OFERENTE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET,  "/api/oferente/perfil/**")
+                        .hasAnyRole("EMPRESA", "OFERENTE", "ADMIN")
+
+                        // Empresa/Admin ven habilidades de un oferente específico (con ID en la ruta)
+                        .requestMatchers(HttpMethod.GET,    "/api/oferente/habilidades/**")
+                        .hasAnyRole("EMPRESA", "OFERENTE", "ADMIN")
+
+                        // El oferente gestiona sus propias habilidades y perfil
+                        .requestMatchers(HttpMethod.GET,    "/api/oferente/habilidades")
+                        .hasRole("OFERENTE")
+                        .requestMatchers(HttpMethod.POST,   "/api/oferente/habilidades")
+                        .hasRole("OFERENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/oferente/habilidades/**")
+                        .hasRole("OFERENTE")
+                        .requestMatchers(HttpMethod.POST,   "/api/oferente/curriculum")
+                        .hasRole("OFERENTE")
+
+                        // Resto de rutas de oferente requieren rol OFERENTE
                         .requestMatchers("/api/oferente/**").hasRole("OFERENTE")
+
+                        // ── Empresa ────────────────────────────────────────────────────
+                        .requestMatchers("/api/empresa/**").hasRole("EMPRESA")
+
+                        // ── Admin ──────────────────────────────────────────────────────
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // ── Cualquier otra ruta requiere autenticación ─────────────────
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
