@@ -48,6 +48,9 @@ public class SecurityConfig {
                                 "/*.js", "/*.css", "/*.svg", "/*.png", "/*.ico"
                         ).permitAll()
 
+                        // ── Rutas del frontend (React Router) ──────────────────────────
+                        .requestMatchers("/dashboard/**", "/puestos", "/puestos/**", "/buscar", "/registro/**").permitAll()
+
                         // ── Auth ───────────────────────────────────────────────────────
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 

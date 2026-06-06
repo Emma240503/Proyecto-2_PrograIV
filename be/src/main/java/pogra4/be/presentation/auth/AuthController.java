@@ -10,7 +10,7 @@ import pogra4.be.logic.Admin;
 import pogra4.be.logic.Empresa;
 import pogra4.be.logic.Oferente;
 import pogra4.be.logic.Service;
-import pogra4.be.security.JwtUtil;
+import pogra4.be.security.TokenService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,7 +20,7 @@ public class AuthController {
     private Service service;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private TokenService tokenService;
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest req) {
@@ -30,7 +30,7 @@ public class AuthController {
         // Admin usa ID como usuario
         Admin admin = service.findAdminById(correo);
         if (admin != null && clave.equals(admin.getContrasenna())) {
-            String token = jwtUtil.generateToken(admin.getId(), "ADMIN");
+            String token = tokenService.generateTokenForAdmin(admin);
             return new LoginResponse(token, "ADMIN", admin.getId(), admin.getNombre());
         }
 
@@ -41,7 +41,7 @@ public class AuthController {
                 !"ACTIVA".equalsIgnoreCase(empresa.getEstado())) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Empresa pendiente de aprobación");
             }
-            String token = jwtUtil.generateToken(empresa.getId(), "EMPRESA");
+            String token = tokenService.generateTokenForEmpresa(empresa);
             return new LoginResponse(token, "EMPRESA", empresa.getId(), empresa.getNombre());
         }
 
@@ -51,7 +51,7 @@ public class AuthController {
             if (!"aprobado".equalsIgnoreCase(oferente.getEstado())) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Oferente pendiente de aprobación");
             }
-            String token = jwtUtil.generateToken(oferente.getId(), "OFERENTE");
+            String token = tokenService.generateTokenForOferente(oferente);
             return new LoginResponse(token, "OFERENTE", oferente.getId(),
                     oferente.getNombre() + " " + oferente.getPrimerApellido());
         }

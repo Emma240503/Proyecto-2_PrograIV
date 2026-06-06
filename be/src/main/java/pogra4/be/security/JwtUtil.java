@@ -2,21 +2,20 @@ package pogra4.be.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "InfoEmpleoSecretKey2026SuperSegura!!";
-    private static final long EXPIRATION_MS = 1000 * 60 * 60 * 8; // 8 horas
+    @Autowired
+    private JwtConfig jwtConfig;
 
     private SecretKey getKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+        return jwtConfig.getSecretKey();
     }
 
     public String generateToken(String subject, String rol) {
@@ -24,7 +23,7 @@ public class JwtUtil {
                 .subject(subject)
                 .claim("rol", rol)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
+                .expiration(new Date(System.currentTimeMillis() + jwtConfig.getJwtExpiration()))
                 .signWith(getKey())
                 .compact();
     }

@@ -52,6 +52,18 @@ function App() {
 }
 
 function Header({ user, onLoginClick, onLogout }) {
+  const getDashboardLink = () => {
+    console.log('user:', user); // DEBUG
+    if (!user) return null;
+    if (user.rol === 'EMPRESA') return '/dashboard/empresa';
+    if (user.rol === 'OFERENTE') return '/dashboard/oferente';
+    if (user.rol === 'ADMIN') return '/dashboard/admin';
+    return null;
+  };
+
+  const dashboardLink = getDashboardLink();
+  console.log('dashboardLink:', dashboardLink); // DEBUG
+
   return (
     <header className="header">
       <div className="header-left">
@@ -62,6 +74,7 @@ function Header({ user, onLoginClick, onLogout }) {
       </div>
       <nav className="header-nav">
         <Link to="/buscar">Buscar puestos</Link>
+        {dashboardLink && <Link to={dashboardLink}>Mi dashboard</Link>}
         <Link to="/registro/empresa">Registrar empresa</Link>
         <Link to="/registro/oferente">Registrar oferente</Link>
       </nav>

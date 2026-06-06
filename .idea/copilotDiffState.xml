@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/be/src/main/java/pogra4/be/config/WebConfig.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/be/src/main/java/pogra4/be/config/WebConfig.java" />
+              <option name="updatedContent" value="package pogra4.be.config;&#10;&#10;import org.springframework.context.annotation.Configuration;&#10;import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;&#10;import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;&#10;import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;&#10;&#10;@Configuration&#10;public class WebConfig implements WebMvcConfigurer {&#10;    &#10;    @Override&#10;    public void addResourceHandlers(ResourceHandlerRegistry registry) {&#10;        // Servir archivos estáticos desde la carpeta static&#10;        registry.addResourceHandler(&quot;/**&quot;)&#10;                .addResourceLocations(&quot;classpath:/static/&quot;)&#10;                .resourceChain(true);&#10;    }&#10;&#10;    @Override&#10;    public void addViewControllers(ViewControllerRegistry registry) {&#10;        // Redirigir rutas del frontend a index.html para que React Router las maneje&#10;        registry.addViewController(&quot;/&quot;).setViewName(&quot;forward:/index.html&quot;);&#10;        registry.addViewController(&quot;/dashboard/**&quot;).setViewName(&quot;forward:/index.html&quot;);&#10;        registry.addViewController(&quot;/buscar&quot;).setViewName(&quot;forward:/index.html&quot;);&#10;        registry.addViewController(&quot;/puestos&quot;).setViewName(&quot;forward:/index.html&quot;);&#10;        registry.addViewController(&quot;/registro/**&quot;).setViewName(&quot;forward:/index.html&quot;);&#10;    }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
