@@ -18,7 +18,7 @@ function App() {
     if (!token) return null;
     return {
       token,
-      rol:    localStorage.getItem('rol'),
+      rol:    (localStorage.getItem('rol') || '').toUpperCase(),
       id:     localStorage.getItem('id'),
       nombre: localStorage.getItem('nombre'),
     };
@@ -27,10 +27,10 @@ function App() {
 
   function handleLogin(data) {
     localStorage.setItem('token', data.token);
-    localStorage.setItem('rol',    data.rol);
+    localStorage.setItem('rol',    (data.rol || '').toUpperCase());
     localStorage.setItem('id',     String(data.id));
     localStorage.setItem('nombre', data.nombre);
-    setUser(data);
+    setUser({ ...data, rol: (data.rol || '').toUpperCase() });
     setShowLogin(false);
   }
 
@@ -53,16 +53,15 @@ function App() {
 
 function Header({ user, onLoginClick, onLogout }) {
   const getDashboardLink = () => {
-    console.log('user:', user); // DEBUG
     if (!user) return null;
-    if (user.rol === 'EMPRESA') return '/dashboard/empresa';
-    if (user.rol === 'OFERENTE') return '/dashboard/oferente';
-    if (user.rol === 'ADMIN') return '/dashboard/admin';
+    const rol = (user.rol || '').toUpperCase();
+    if (rol === 'EMPRESA') return '/dashboard/empresa';
+    if (rol === 'OFERENTE') return '/dashboard/oferente';
+    if (rol === 'ADMIN') return '/dashboard/admin';
     return null;
   };
 
   const dashboardLink = getDashboardLink();
-  console.log('dashboardLink:', dashboardLink); // DEBUG
 
   return (
     <header className="header">
