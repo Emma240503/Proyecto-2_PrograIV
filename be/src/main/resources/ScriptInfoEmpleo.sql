@@ -169,6 +169,7 @@ INSERT INTO `infoempleo`.`Admin`
 VALUES
     ('admin1', 'admin@bolsaempleo.local', 'Administrador', 'Admin del sistema', 0, '1');
 
+ALTER TABLE puesto MODIFY descripcion TEXT;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
